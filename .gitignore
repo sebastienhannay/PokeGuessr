@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode
+build/
+DerivedData/
+*.xcworkspace
+!default.xcworkspace
+xcuserdata/
+*.xcuserstate
+
+# Xcode project user data
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+
+# Archives
+*.xcarchive
+
+# Logs
+*.log
+
+# Temporary files
+*.swp
+*.tmp
+
+# JetBrains IDEs (AppCode, IntelliJ, etc.)
+.idea/
+*.iml
