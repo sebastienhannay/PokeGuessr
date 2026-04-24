@@ -151,4 +151,51 @@ extension Pokemon {
         p.cries = nil
         return p
     }
+    
+    static var pikachu: Pokemon {
+        let pokemon = Pokemon(
+            id: 25,
+            name: "pikachu",
+            height: 4,
+            weight: 60,
+            baseExperience: 112,
+            isLegendary: false,
+            isMythical: false,
+            isBaby: false,
+            captureRate: 190,
+            baseHappiness: 70,
+            evolutionChainURL: ""
+        )
+
+        pokemon.sprites = PokemonSpritesEntity(
+            frontDefault: nil,
+            frontShiny: nil,
+            backDefault: nil,
+            backShiny: nil,
+            officialArtwork: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+            officialArtworkShiny: nil,
+            homeDefault: nil,
+            homeShiny: nil,
+            dreamWorld: nil
+        )
+
+        pokemon.cries = PokemonCriesEntity(
+            latest: "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/25.ogg",
+            legacy: "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/legacy/25.ogg"
+        )
+        
+        return pokemon
+    }
+}
+
+
+extension Pokemon {
+    
+    static func fetchExisting(id: Int, in context: ModelContext) throws -> Pokemon? {
+        let descriptor = FetchDescriptor<Pokemon>(
+            predicate: #Predicate { $0.id == id }
+        )
+        return try context.fetch(descriptor).first
+    }
+    
 }

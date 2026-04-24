@@ -1,8 +1,15 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "?" : {
+
+    },
+    "%lld" : {
+
+    },
     "datePicker.pickADate" : {
       "comment" : "The title of a date picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {

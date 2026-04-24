@@ -69,5 +69,5 @@ struct SunburstView: View {
         .aspectRatio(1, contentMode: .fit)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .backgroundDecor(.redBackground)
+    .background(.black)
 }

@@ -11,7 +11,7 @@ import Combine
 import AVFoundation
 
 @MainActor
-final class SilhouetteViewModel: ObservableObject {
+final class PokeSilhouetteViewModel: ObservableObject {
     
     @Published var pokemon: Pokemon?
     @Published var isLoading = false

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E4F33ED2F9281A100272DB1 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0E4F33E92F9281A100272DB1 /* SDWebImageSwiftUI */; };
-		0EDFF9682F9672B9009E11C3 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 0EDFF9672F9672B9009E11C3 /* README */; };
+		0EBC6C732F98D4AD003E9F4A /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 0EBC6C722F98D4AD003E9F4A /* SwiftDate */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,7 +24,6 @@
 /* Begin PBXFileReference section */
 		0E4F33F22F9281A100272DB1 /* PokeGuessr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokeGuessr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E4F34652F94CDC300272DB1 /* PokeGuessrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokeGuessrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0EDFF9672F9672B9009E11C3 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -58,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EBC6C732F98D4AD003E9F4A /* SwiftDate in Frameworks */,
 				0E4F33ED2F9281A100272DB1 /* SDWebImageSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,9 +75,9 @@
 		0E4F332C2F8E6E5B00272DB1 = {
 			isa = PBXGroup;
 			children = (
-				0EDFF9672F9672B9009E11C3 /* README */,
 				0E4F33372F8E6E5B00272DB1 /* PokeGuessr */,
 				0E4F34662F94CDC300272DB1 /* PokeGuessrTests */,
+				0EBC6C712F98D4AD003E9F4A /* Frameworks */,
 				0E4F33362F8E6E5B00272DB1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +89,13 @@
 				0E4F34652F94CDC300272DB1 /* PokeGuessrTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		0EBC6C712F98D4AD003E9F4A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +119,7 @@
 			name = PokeGuessr;
 			packageProductDependencies = (
 				0E4F33E92F9281A100272DB1 /* SDWebImageSwiftUI */,
+				0EBC6C722F98D4AD003E9F4A /* SwiftDate */,
 			);
 			productName = WhosThatPokemon;
 			productReference = 0E4F33F22F9281A100272DB1 /* PokeGuessr.app */;
@@ -178,6 +186,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				0E4F33762F8EC74E00272DB1 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				0EBC6C702F98CFDD003E9F4A /* XCRemoteSwiftPackageReference "SwiftDate" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0E4F33362F8E6E5B00272DB1 /* Products */;
@@ -195,7 +204,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EDFF9682F9672B9009E11C3 /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +527,14 @@
 				minimumVersion = 3.1.4;
 			};
 		};
+		0EBC6C702F98CFDD003E9F4A /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/SwiftDate.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -526,6 +542,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0E4F33EA2F9281A100272DB1 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		0EBC6C722F98D4AD003E9F4A /* SwiftDate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0EBC6C702F98CFDD003E9F4A /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

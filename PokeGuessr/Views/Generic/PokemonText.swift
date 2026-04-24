@@ -25,6 +25,7 @@ struct PokemonText: View {
     }
 }
 
+
 private extension Text {
 
     func textBorder(color: Color, fontSize: CGFloat) -> some View {

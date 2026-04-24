@@ -48,7 +48,7 @@ extension PokeAPIClient {
     
     func getPokemon(id: Int, in context: ModelContext) async throws -> Pokemon {
         
-        if let existing = try fetchExisting(id: id, in: context) {
+        if let existing = try Pokemon.fetchExisting(id: id, in: context) {
             return existing
         }
         
@@ -75,16 +75,6 @@ extension PokeAPIClient {
         try context.save()
         
         return entity
-    }
-}
-
-private extension PokeAPIClient {
-    
-    func fetchExisting(id: Int, in context: ModelContext) throws -> Pokemon? {
-        let descriptor = FetchDescriptor<Pokemon>(
-            predicate: #Predicate { $0.id == id }
-        )
-        return try context.fetch(descriptor).first
     }
 }
 

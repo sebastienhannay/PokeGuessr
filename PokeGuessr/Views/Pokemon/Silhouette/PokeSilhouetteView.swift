@@ -16,11 +16,11 @@ private enum AnimationPhase {
     case contentVisible
 }
 
-struct SilhouetteView: View {
+struct PokeSilhouetteView: View {
     
     @Environment(\.modelContext) private var context
     
-    @StateObject private var viewModel: SilhouetteViewModel
+    @StateObject private var viewModel: PokeSilhouetteViewModel
 
     @State private var animationPhase: AnimationPhase = .pokeballEntering
     
@@ -28,8 +28,8 @@ struct SilhouetteView: View {
     
     var pokemonId: Int
     
-    init(pokemonId: Int, gameStat: Binding<PokeGameStatDay?>, viewModel: SilhouetteViewModel? = nil) {
-        self._viewModel = StateObject(wrappedValue: viewModel ?? SilhouetteViewModel())
+    init(pokemonId: Int, gameStat: Binding<PokeGameStatDay?>, viewModel: PokeSilhouetteViewModel? = nil) {
+        self._viewModel = StateObject(wrappedValue: viewModel ?? PokeSilhouetteViewModel())
         self.pokemonId = pokemonId
         self._gameStat = gameStat
     }
@@ -214,54 +214,24 @@ struct SilhouetteView: View {
     }
 }
 
-private extension Image {
-    
-    func spriteStyle(
-        isRevealed: Bool,
-        pokeballVisible: Bool,
-        isPressed: Bool
-    ) -> some View {
-        GeometryReader { geo in
-            self
-                .renderingMode(!pokeballVisible && isRevealed ? .original : .template)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .foregroundStyle(pokeballVisible ? .clear : .unknown)
-                .frame(width: geo.size.width * 0.7,
-                       height: geo.size.height * 0.7)
-                .shadow(color: .black.opacity(0.5),
-                        radius: isPressed ? 0.5 : 1,   // 👈 subtle press feedback
-                        x: isPressed ? -2 : -5,
-                        y: isPressed ? 1 : 3)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .scaleEffect(pokeballVisible ? 0.5 : 1)
-                .scaleEffect(isPressed ? 0.92 : 1) // 👈 press scale layered cleanly
-                .animation(.spring(response: 0.25, dampingFraction: 0.5),
-                           value: isPressed)
-                .animation(.spring(response: 0.4, dampingFraction: 0.6),
-                           value: pokeballVisible)
-        }
-    }
-}
-
 #Preview("Normal") {
     @Previewable @State var gameStat = Optional(PokeGameStatDay())
-    SilhouetteView(pokemonId: 25, gameStat: $gameStat)
+    PokeSilhouetteView(pokemonId: 25, gameStat: $gameStat)
         .modelContainer(.preview)
 }
 
 #Preview("Regional form") {
     @Previewable @State var gameStat = Optional(PokeGameStatDay())
-    SilhouetteView(pokemonId: 10167, gameStat: $gameStat)
+    PokeSilhouetteView(pokemonId: 10167, gameStat: $gameStat)
         .modelContainer(.preview)
 }
 
 #Preview("MissingNo") {
     @Previewable @State var gameStat = Optional(PokeGameStatDay())
-    let vm = SilhouetteViewModel()
+    let vm = PokeSilhouetteViewModel()
     vm.pokemon = Pokemon.missingNo
     vm.update(from: gameStat)
-    return SilhouetteView(pokemonId: -1, gameStat: $gameStat, viewModel: vm)
+    return PokeSilhouetteView(pokemonId: -1, gameStat: $gameStat, viewModel: vm)
         .modelContainer(.preview)
 }
 
@@ -272,6 +242,6 @@ private extension Image {
         stat.silhouetteAttempts = 3
         return stat
     }()
-    SilhouetteView(pokemonId: 25, gameStat: $gameStat)
+    PokeSilhouetteView(pokemonId: 25, gameStat: $gameStat)
         .modelContainer(.preview)
 }

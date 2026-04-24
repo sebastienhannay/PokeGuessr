@@ -19,11 +19,14 @@ struct PokeComparator {
 
     private func acceptedNames(for pokemon: Pokemon) -> Set<String> {
         let languages = preferredPokeAPILanguageCodes()
-        return Set(
+        
+        let names = Set(
             (pokemon.formSpecificNames + pokemon.names)
                 .filter { languages.contains($0.languageCode.lowercased()) }
                 .map(\.name)
         )
+        
+        return names.isEmpty ? Set([pokemon.name]) : names
     }
 
     private func preferredPokeAPILanguageCodes() -> Set<String> {

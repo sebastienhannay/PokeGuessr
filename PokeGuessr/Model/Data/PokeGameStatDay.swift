@@ -28,6 +28,13 @@ final class PokeGameStatDay {
         self.silhouetteFound = silhouetteFound
         self.silhouetteAttempts = silhouetteAttempt
     }
+    
+    func matches(date : Date) -> Bool {
+        let cal = Calendar.current
+        let components = cal.dateComponents([.year, .month, .day], from: date)
+        
+        return year == components.year && month == components.month && day == components.day
+    }
 }
 
 extension PokeGameStatDay {

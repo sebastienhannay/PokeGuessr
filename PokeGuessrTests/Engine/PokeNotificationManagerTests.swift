@@ -65,7 +65,7 @@ private func expectedNotificationId(for date: Date) -> String {
 
 // MARK: - Test Suite
 
-@Suite("PokeNotificationManager")
+@Suite("PokeNotificationManager", .serialized)
 struct PokeNotificationManagerTests {
 
     // MARK: Notification ID format

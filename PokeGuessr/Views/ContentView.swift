@@ -19,7 +19,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            SilhouetteView(
+            PokeSilhouetteView(
                 pokemonId: PokeRandomIdGenerator().daily(for: .silhouette, at: date),
                 gameStat: $gameStat
             )
@@ -32,14 +32,11 @@ struct ContentView: View {
                         .matchedTransitionSource(id: "MENUCONTENT", in: namespace)
                         .primaryTint(.secondary)
                         .popover(isPresented: $showCalendar) {
-                            DatePicker(
-                                "datePicker.pickADate",
+                            PokeCalendarPicker(
                                 selection: $date,
                                 in: releaseDate...Date(),
-                                displayedComponents: .date
+                                gameMode: .silhouette
                             )
-                            .datePickerStyle(.graphical)
-                            .accentColor(.redBackground)
                             .frame(width: 320, height: 320)
                             .presentationCompactAdaptation(.popover)
                             .navigationTransition(.zoom(sourceID: "MENUCONTENT", in: namespace))
