@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftDate
 
 extension Date {
     static func on(year: Int, month: Int, day: Int) -> Date {
@@ -62,11 +63,6 @@ struct PokeRandomIdGenerator {
     
     // MARK: - Private Helpers
     private static func dayNumber(from date: Date) -> Int {
-        let cal = Calendar.current
-        let components = cal.dateComponents([.year, .month, .day], from: date)
-        let y = components.year  ?? 0
-        let m = components.month ?? 0
-        let d = components.day   ?? 0
-        return y * 10_000 + m * 100 + d
+        return date.year * 10_000 + date.month * 100 + date.day
     }
 }

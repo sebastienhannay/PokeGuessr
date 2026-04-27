@@ -11,7 +11,7 @@ import SwiftDate
 // MARK: - Fixtures
 
 private var jan15: Date {
-    DateInRegion(components: .init(year: 2025, month: 1, day: 15), region: .current)!.date
+    Date(components: .init(year: 2025, month: 1, day: 15), region: .current)!.date
 }
 
 private func makeSUT(
@@ -32,7 +32,7 @@ struct PokeCalendarViewModelTests {
         let noon = Calendar.current.date(bySettingHour: 13, minute: 37, second: 0, of: jan15)!
         let sut = makeSUT(date: noon, mode: .silhouette)
 
-        #expect(sut.selectedDate == DateInRegion(noon).dateAt(.startOfDay))
+        #expect(sut.selectedDate == noon.dateAt(.startOfDay))
         #expect(sut.selectedMonth.month == 1)
         #expect(sut.selectedMonth.year == 2025)
         #expect(sut.gameMode == .silhouette)
@@ -83,16 +83,16 @@ struct PokeCalendarViewModelTests {
         let original = sut.selectedDate
 
         // Valid day — should update
-        let inRange = DateInRegion(jan15).dateAt(.startOfDay) + 2.days
+        let inRange = jan15.dateAt(.startOfDay) + 2.days
         sut.select(day: inRange)
         #expect(sut.selectedDate == inRange)
 
         // Before range — should be a no-op
-        sut.select(day: DateInRegion(lower).dateAt(.startOfDay) - 1.days)
+        sut.select(day: lower.dateAt(.startOfDay) - 1.days)
         #expect(sut.selectedDate == inRange)
 
         // After range — should be a no-op
-        sut.select(day: DateInRegion(upper).dateAt(.startOfDay) + 1.days)
+        sut.select(day: upper.dateAt(.startOfDay) + 1.days)
         #expect(sut.selectedDate == inRange)
 
         _ = original // silence unused warning
@@ -106,7 +106,7 @@ struct PokeCalendarViewModelTests {
         sut.syncMonthToSelectedDate()
         #expect(sut.selectedMonth == before)
 
-        sut.selectedDate = DateInRegion(
+        sut.selectedDate = Date(
             components: .init(year: 2025, month: 3, day: 10), region: .current
         )!.dateAt(.startOfDay)
         sut.syncMonthToSelectedDate()

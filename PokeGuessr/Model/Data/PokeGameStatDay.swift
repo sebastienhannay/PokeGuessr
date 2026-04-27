@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftDate
 
 @Model
 final class PokeGameStatDay {
@@ -18,31 +19,23 @@ final class PokeGameStatDay {
     var silhouetteAttempts: Int = 0
     
     init(date: Date = Date(), silhouetteFound: Bool = false, silhouetteAttempt: Int = 0) {
-        let cal = Calendar.current
-        let components = cal.dateComponents([.year, .month, .day], from: date)
-        
-        year = components.year  ?? 0
-        month = components.month ?? 0
-        day = components.day   ?? 0
+        year = date.year
+        month = date.month
+        day = date.day
         
         self.silhouetteFound = silhouetteFound
         self.silhouetteAttempts = silhouetteAttempt
     }
     
     func matches(date : Date) -> Bool {
-        let cal = Calendar.current
-        let components = cal.dateComponents([.year, .month, .day], from: date)
-        
-        return year == components.year && month == components.month && day == components.day
+        return year == date.year && month == date.month && day == date.day
     }
 }
 
 extension PokeGameStatDay {
     
     static func fetchOrCreatePokeGameStatDay(for date: Date, modelContext: ModelContext) -> PokeGameStatDay {
-        let cal = Calendar.current
-        let c = cal.dateComponents([.year, .month, .day], from: date)
-        let (day, month, year) = (c.day ?? 0, c.month ?? 0, c.year ?? 0)
+        let (day, month, year) = (date.day, date.month, date.year)
         
         let predicate = #Predicate<PokeGameStatDay> { stat in
             stat.day == day && stat.month == month && stat.year == year

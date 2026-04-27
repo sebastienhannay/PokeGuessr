@@ -29,23 +29,23 @@ struct MonthYear: Equatable, Hashable {
     }
     
     /// Validates that month is in range 1-12
-    init(date: DateInRegion) {
+    init(date: Date) {
         self.month = date.month
         self.year = date.year
     }
     
     /// Converts to a Date (first day of the month)
-    var asDate: DateInRegion {
-        let region = Region.current
-        
-        let dateInRegion = DateInRegion(
+    var asDate: Date {
+        let date = Date(
             year: year,
             month: month,
-            day: 1,
-            region: region
-        ).dateAt(.startOfMonth)
+            day: 15,
+            hour: 0,
+            minute: 0,
+            region: Region.current
+        )
         
-        return dateInRegion
+        return date
     }
     
     /// Returns the next month
@@ -66,7 +66,7 @@ struct MonthYear: Equatable, Hashable {
         }
     }
     
-    func allDays() -> [DateInRegion] {
+    func allDays() -> [Date] {
         let start = asDate
         let numberOfDays = start.monthDays
         

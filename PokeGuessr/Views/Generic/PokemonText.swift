@@ -20,38 +20,63 @@ struct PokemonText: View {
         Text(text)
             .font(.custom("Pokemon Solid", size: fontSize, relativeTo: .title))
             .foregroundStyle(.font)
-            .textBorder(color: .border, fontSize: fontSize)
+            .stroke(color: .border, width: fontSize * 0.06)
             .tracking(fontSize / 5)
     }
 }
 
+struct StrokeModifier: ViewModifier {
+    private let id = UUID()
+    var strokeSize: CGFloat = 1
+    var strokeColor: Color = .blue
 
-private extension Text {
+    func body(content: Content) -> some View {
+        if strokeSize > 0 {
+            appliedStrokeBackground(content: content)
+        } else {
+            content
+        }
+    }
 
-    func textBorder(color: Color, fontSize: CGFloat) -> some View {
-        let maxOffset = fontSize / 30
-        let step: CGFloat = maxOffset / 2
-        let angles: [CGFloat] = Array(stride(from: 0, to: 360, by: 45))
+    private func appliedStrokeBackground(content: Content) -> some View {
+        content
+            .padding(strokeSize * 2)
+            .background(
+                Rectangle()
+                    .foregroundColor(strokeColor)
+                    .mask(alignment: .center) {
+                        mask(content: content)
+                    }
+            )
+            .compositingGroup()
+    }
 
-        return Array(stride(from: step, through: maxOffset, by: step))
-            .reduce(AnyView(self)) { view, radius in
-                angles.reduce(view) { innerView, angle in
-                    let rad = angle * .pi / 180
-                    return AnyView(
-                        innerView.shadow(
-                            color: color,
-                            radius: 0.2,
-                            x: cos(rad) * radius,
-                            y: sin(rad) * radius
-                        )
-                    )
-                }
+    func mask(content: Content) -> some View {
+        Canvas { context, size in
+            context.addFilter(.alphaThreshold(min: 0.01))
+            if let resolvedView = context.resolveSymbol(id: id) {
+                context.draw(resolvedView, at: .init(x: size.width * 0.5, y: size.height * 0.5))
             }
+        } symbols: {
+            content
+                .tag(id)
+                .blur(radius: strokeSize)
+        }
+    }
+}
+
+
+private extension View {
+    
+    func stroke(color: Color, width: CGFloat = 1) -> some View {
+        modifier(StrokeModifier(strokeSize: width, strokeColor: color))
     }
 
 }
 
 #Preview {
     PokemonText("Pokémon", fontSize: 32)
-    PokemonText("Pokémon", fontSize: 128)
+    PokemonText("C'est Insolourdo !", fontSize: 128)
+        .lineLimit(2)
+        .multilineTextAlignment(.center)
 }

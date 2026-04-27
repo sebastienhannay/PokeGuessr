@@ -42,7 +42,7 @@ struct PokeDayCellView: View {
             ZStack {
                 Circle().fill(.regularMaterial)
                 WebImage(url: URL(string: pokemon.sprites?.officialArtwork ?? "")) { image in
-                    image.spriteStyle(isRevealed: true, ratio: 1).shadow(radius: 5)
+                    image.spriteStyle(isRevealed: true, ratio: 1)
                 } placeholder: { EmptyView() }
                 .indicator(.activity)
             }
@@ -51,9 +51,9 @@ struct PokeDayCellView: View {
                 .overlay {
                     GeometryReader { geo in
                         ZStack {
-                            PokemonText("?", fontSize: geo.size.height * 0.8)
-                                .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.8)
-                                .lineLimit(1).minimumScaleFactor(0.1)
+                            PokemonText("?", fontSize: geo.size.height * 0.5)
+                                .frame(width: geo.size.width * 0.5, height: geo.size.height * 0.5)
+                                .lineLimit(1)
                         }
                         .frame(width: geo.size.width, height: geo.size.height)
                     }

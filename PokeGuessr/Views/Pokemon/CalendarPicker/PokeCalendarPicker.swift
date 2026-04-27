@@ -50,7 +50,7 @@ struct PokeCalendarPicker: View {
             vm.configure(context: context)
         }
         .onChange(of: selection) {
-            vm.selectedDate = DateInRegion(selection)
+            vm.selectedDate = selection
             vm.syncMonthToSelectedDate()
         }
         .onChange(of: vm.selectedDate) {
@@ -124,3 +124,52 @@ struct PokeCalendarPicker: View {
     .frame(width: 320, height: 320)
     .background(RoundedRectangle(cornerRadius: 16).fill(.gray.opacity(0.1)))
 }
+
+
+private struct TimeZonePreview: View {
+    let identifier: String
+
+    private var tz: TimeZone { TimeZone(identifier: identifier)! }
+    private var formattedDate: String {
+        let f = DateFormatter()
+        f.timeZone = tz
+        f.dateFormat = "EEE d MMM yyyy · HH:mm:ss"
+        return f.string(from: Date())
+    }
+
+    var body: some View {
+        VStack(spacing: 12) {
+            VStack(spacing: 2) {
+                Text(tz.identifier)
+                    .font(.system(.caption, design: .monospaced).weight(.semibold))
+                Text(formattedDate)
+                    .font(.system(.caption, design: .monospaced))
+                    .foregroundStyle(.secondary)
+            }
+
+            PokeCalendarPicker(
+                selection: .constant(Date()),
+                in: (Date() - 2.months)...Date(),
+                gameMode: .silhouette
+            )
+            .modelContainer(.preview)
+            .frame(width: 320, height: 320)
+            .background(RoundedRectangle(cornerRadius: 16).fill(.gray.opacity(0.1)))
+            .environment(\.timeZone, tz)
+        }
+    }
+}
+
+#Preview("Hawaii (HST)")        { TimeZonePreview(identifier: "Pacific/Honolulu") }
+#Preview("Los Angeles (PT)")    { TimeZonePreview(identifier: "America/Los_Angeles") }
+#Preview("Chicago (CT)")        { TimeZonePreview(identifier: "America/Chicago") }
+#Preview("New York (ET)")       { TimeZonePreview(identifier: "America/New_York") }
+#Preview("London (GMT/BST)")    { TimeZonePreview(identifier: "Europe/London") }
+#Preview("Brussels (CET)")      { TimeZonePreview(identifier: "Europe/Brussels") }
+#Preview("Moscow (MSK)")        { TimeZonePreview(identifier: "Europe/Moscow") }
+#Preview("Dubai (GST)")         { TimeZonePreview(identifier: "Asia/Dubai") }
+#Preview("Kolkata (IST)")       { TimeZonePreview(identifier: "Asia/Kolkata") }
+#Preview("Bangkok (ICT)")       { TimeZonePreview(identifier: "Asia/Bangkok") }
+#Preview("Tokyo (JST)")         { TimeZonePreview(identifier: "Asia/Tokyo") }
+#Preview("Sydney (AEST)")       { TimeZonePreview(identifier: "Australia/Sydney") }
+#Preview("Kiritimati (LINT)")   { TimeZonePreview(identifier: "Pacific/Kiritimati") }

@@ -21,7 +21,7 @@ final class PokeCalendarViewModel {
 
     // MARK: – State
     var selectedMonth: MonthYear
-    var selectedDate: DateInRegion
+    var selectedDate: Date
     var showingMonthYearPicker = false
 
     // MARK: – Config
@@ -32,7 +32,7 @@ final class PokeCalendarViewModel {
     private var context: ModelContext?
 
     // MARK: – Derived joined data
-    private(set) var dayData: [DateInRegion: PokeDayData] = [:]
+    private(set) var dayData: [String: PokeDayData] = [:]
 
     private let generator = PokeRandomIdGenerator()
 
@@ -40,8 +40,8 @@ final class PokeCalendarViewModel {
     init(selectedDate: Date,
          dateRange: ClosedRange<Date>? = nil,
          gameMode: PokeGameMode = .silhouette) {
-        self.selectedDate = DateInRegion(selectedDate).dateAt(.startOfDay)
-        self.selectedMonth = MonthYear(date: DateInRegion(selectedDate))
+        self.selectedDate = selectedDate.dateAt(.startOfDay)
+        self.selectedMonth = MonthYear(date: selectedDate)
         self.dateRange = dateRange
         self.gameMode = gameMode
     }
@@ -53,11 +53,7 @@ final class PokeCalendarViewModel {
 
     // MARK: – Derived
     var monthTitle: String {
-        let date = DateInRegion(
-            components: .init(year: selectedMonth.year, month: selectedMonth.month, day: 1),
-            region: .current
-        )
-        return date?.toFormat("MMMM yyyy").capitalized ?? ""
+        return selectedMonth.asDate.toFormat("MMMM yyyy").capitalized
     }
 
     var weekdaySymbols: [String] {
@@ -76,7 +72,7 @@ final class PokeCalendarViewModel {
         rebuildDayData()
     }
 
-    func select(day: DateInRegion) {
+    func select(day: Date) {
         guard day >= lowerBound && day <= upperBound else { return }
         selectedDate = day
     }
@@ -91,10 +87,11 @@ final class PokeCalendarViewModel {
 
     // MARK: – Week grid
     func weeks() -> [[PokeCalendarDayCell]] {
-        let startOfMonth = selectedMonth.asDate
-        let endOfMonth   = startOfMonth.dateAt(.endOfMonth)
+        let referenceDate = selectedMonth.asDate
+        let startOfMonth = referenceDate.dateAt(.startOfMonth)
+        let endOfMonth   = referenceDate.dateAt(.endOfMonth)
         let weekStart    = startOfMonth.dateAt(.startOfWeek)
-        let days: [DateInRegion] = (0..<42).map { weekStart + $0.days }
+        let days: [Date] = (0..<42).map { weekStart + $0.days }
 
         return stride(from: 0, to: 42, by: 7).map { offset in
             days[offset..<offset + 7].map { day in
@@ -104,11 +101,11 @@ final class PokeCalendarViewModel {
     }
 
     // MARK: – Private helpers
-    private func cell(for day: DateInRegion,
-                      startOfMonth: DateInRegion,
-                      endOfMonth: DateInRegion) -> PokeCalendarDayCell {
+    private func cell(for day: Date,
+                      startOfMonth: Date,
+                      endOfMonth: Date) -> PokeCalendarDayCell {
         let inMonth = day.isInRange(date: startOfMonth, and: endOfMonth, orEqual: true)
-        let data    = day > lowerBound && day < upperBound ? dayData[day.dateAt(.startOfDay)] : nil
+        let data = day > lowerBound && day < upperBound ? dayData[formatter.string(from: day)] : nil
 
         return PokeCalendarDayCell(
             date: day,
@@ -157,10 +154,16 @@ final class PokeCalendarViewModel {
             let id = generator.daily(for: gameMode, at: date)
             guard let pokemon = pokemonById[id] else { return }
             let statDay = statDays.first { $0.matches(date: date) }
-            result[day] = PokeDayData(pokemon: pokemon, statDay: statDay)
+            result[formatter.string(from: date)] = PokeDayData(pokemon: pokemon, statDay: statDay)
         }
     }
+    
+    private var formatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = .withFullDate
+        return formatter
+    }()
 
-    private var lowerBound: DateInRegion { DateInRegion(dateRange?.lowerBound ?? .distantPast) }
-    private var upperBound: DateInRegion { DateInRegion(dateRange?.upperBound ?? .distantFuture) }
+    private var lowerBound: Date { dateRange?.lowerBound.dateAt(.startOfDay) ?? .distantPast }
+    private var upperBound: Date { dateRange?.upperBound.dateAt(.endOfDay) ?? .distantFuture }
 }

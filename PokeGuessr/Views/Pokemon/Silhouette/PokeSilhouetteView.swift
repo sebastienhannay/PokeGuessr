@@ -76,9 +76,9 @@ struct PokeSilhouetteView: View {
             
             Group {
                 if !viewModel.isRevealed {
-                    PokemonText("pokemonView.interrogationMark", fontSize: 48)
+                    PokemonText("pokemonView.interrogationMark", fontSize: 32)
                 } else {
-                    PokemonText("pokemonView.its.\(viewModel.pokemon?.localizedName ?? "")!", fontSize: 48)
+                    PokemonText("pokemonView.its.\(viewModel.pokemon?.localizedName ?? "")!", fontSize: 32)
                 }
             }
             .shadow(color: .black.opacity(0.5),
@@ -92,8 +92,7 @@ struct PokeSilhouetteView: View {
             .animation(.easeInOut(duration: 0.4), value: viewModel.isRevealed)
         }
         .multilineTextAlignment(.center)
-        .lineLimit(2, reservesSpace: true)
-        .minimumScaleFactor(0.5)
+        .lineLimit(3, reservesSpace: true)
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .backgroundDecor(.redBackground)

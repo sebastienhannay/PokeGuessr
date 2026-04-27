@@ -10,7 +10,7 @@ import Foundation
 import SwiftDate
 
 struct PokeCalendarDayCell: Hashable {
-    let date: DateInRegion
+    let date: Date
     let pokemon: Pokemon?
     let statDay: PokeGameStatDay?
     let isInCurrentMonth: Bool
